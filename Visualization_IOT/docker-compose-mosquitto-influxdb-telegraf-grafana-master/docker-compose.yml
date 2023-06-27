@@ -1,0 +1,68 @@
+version: "3"
+
+services:
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto
+    restart: always
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    networks:
+      - iot
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+  
+  influxdb:
+    image: influxdb
+    container_name: influxdb
+    restart: always
+    ports:
+      - "8086:8086"
+    networks:
+      - iot
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+      - influxdb-config:/etc/influxdb2
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=Artem
+      - DOCKER_INFLUXDB_INIT_PASSWORD=password1234
+      - DOCKER_INFLUXDB_INIT_ORG=some_org
+      - DOCKER_INFLUXDB_INIT_BUCKET=some_data
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=359f1d60be3808898b7a7e32c1d38beb771cd55613b56343c2f96b700f9de4db8b763cd9cf4bde5d160c6==
+  
+  telegraf:
+    image: telegraf
+    container_name: telegraf
+    restart: always
+    volumes:
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    depends_on:
+      - mosquitto
+      - influxdb
+    networks:
+      - iot
+  
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: always
+    ports:
+      - "3000:3000"
+    networks:
+      - iot
+    volumes:
+      - ./grafana-provisioning:/etc/grafana/provisioning
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - influxdb
+
+
+networks:
+  iot:
+
+volumes:
+  grafana-data:
+  influxdb-data:
+  influxdb-config:

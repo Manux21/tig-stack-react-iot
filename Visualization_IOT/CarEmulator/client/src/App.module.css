@@ -1,0 +1,31 @@
+@font-face {
+  font-family: 'Mazzard';
+  src: url(./fonts/MazzardH-Medium.ttf);
+}
+
+.App {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  font-family: 'Mazzard';
+  color: white;
+}
+
+.header {
+  font-size: 67px;
+  margin-top: 30vh;
+  margin-left: 40px;
+}
+
+.emulator {
+  margin-top: 100px;
+  display: flex;
+  margin-left: 40px;
+}
+.control {
+  width: 455px;
+  margin-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}

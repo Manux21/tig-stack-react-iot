@@ -1,0 +1,17 @@
+apiVersion: 1
+
+datasources:
+  - name: InfluxDB_v2_Flux
+    type: influxdb
+    access: proxy
+    url: http://influxdb:8086
+    jsonData:
+      version: Flux
+      organization: some_org
+      defaultBucket: some_data
+      tlsSkipVerify: true
+    secureJsonData:
+      token: 359f1d60be3808898b7a7e32c1d38beb771cd55613b56343c2f96b700f9de4db8b763cd9cf4bde5d160c6==
+
+
+
